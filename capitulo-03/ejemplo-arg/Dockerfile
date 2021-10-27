@@ -1,0 +1,3 @@
+ARG ALPINE_VERSION=3.13
+FROM alpine:${ALPINE_VERSION}
+CMD cat /etc/os-release

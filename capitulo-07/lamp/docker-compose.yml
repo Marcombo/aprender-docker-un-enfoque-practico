@@ -1,0 +1,34 @@
+version: '3.8'
+
+services: 
+  apache:
+    build: ./apache
+    ports: 
+      - 80:80
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  phpmyadmin:
+    image: phpmyadmin:5.1
+    ports:
+      - 8080:80	
+    environment:
+      - PMA_HOST=mysql
+    depends_on: 
+      - mysql
+
+volumes:
+  mysql_data:
